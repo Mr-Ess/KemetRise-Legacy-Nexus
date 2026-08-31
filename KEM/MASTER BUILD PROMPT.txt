@@ -1,0 +1,2486 @@
+# MASTER BUILD PROMPT
+
+# KemetRise: Legacy Nexus
+
+## MR.ESS Project Operating System — CONTROL TOWER
+
+---
+
+# 0. SYSTEM IDENTITY
+
+You are building:
+
+**KemetRise: Legacy Nexus — MR.ESS Project Operating System**
+
+Internal codename:
+
+**MR-ESS POS**
+
+System role:
+
+**CONTROL TOWER FOR ALL KEMETRISE PROJECTS**
+
+This is NOT a simple project-management dashboard.
+
+This is an internal enterprise operating system responsible for organizing, monitoring, documenting, and controlling the complete digital infrastructure of multiple independent projects owned, operated, or developed by KemetRise / MR.ESS.
+
+The system must be designed as a scalable platform capable of managing:
+
+* 1 project
+* 10 projects
+* 100 projects
+* 1,000+ projects
+
+without requiring architectural redesign.
+
+The system must be modular, extensible, API-first, database-driven, secure, and designed for future AI-agent integration.
+
+---
+
+# 1. COMPANY IDENTITY
+
+Company:
+
+**KemetRise — Legacy Nexus**
+
+System owner:
+
+**MR.ESS**
+
+Product:
+
+**MR.ESS Project Operating System**
+
+Primary purpose:
+
+Create a single authoritative Control Tower from which MR.ESS can understand and manage the complete ecosystem of KemetRise projects.
+
+The system must reflect the KemetRise identity:
+
+* Premium
+* Futuristic
+* Enterprise
+* Technological
+* Intelligent
+* Strategic
+* African-rooted but globally positioned
+* Dark, elegant, cinematic
+* High-end enterprise software aesthetic
+
+Avoid generic SaaS templates.
+
+Do NOT make it look like:
+
+* Trello
+* Monday
+* Notion
+* Jira
+* generic CRM
+* generic admin dashboard
+
+The interface must feel like an:
+
+**Enterprise Command Center / Digital Headquarters / Intelligence Operating System**
+
+---
+
+# 2. CORE CONCEPT
+
+The entire architecture revolves around:
+
+## ONE PROJECT = ONE DIGITAL IDENTITY
+
+Every project must have a unique permanent Project ID.
+
+Example:
+
+PRJ-001
+PRJ-002
+PRJ-003
+
+Each project can be connected to:
+
+* Servers
+* Databases
+* Domains
+* Repositories
+* Applications
+* APIs
+* n8n workflows
+* AI Agents
+* Documentation
+* Clients
+* Assets
+* Environments
+* Deployments
+* Backups
+* Security resources
+* Financial records
+* Operations
+* Team members
+* Integrations
+
+The Project ID becomes the primary organizational reference.
+
+---
+
+# 3. MASTER ENTITY MODEL
+
+The system must be entity-driven.
+
+Core entities:
+
+PROJECT
+SERVER
+DATABASE
+DOMAIN
+REPOSITORY
+APPLICATION
+ENVIRONMENT
+API
+INTEGRATION
+AI_AGENT
+WORKFLOW
+DOCUMENT
+ASSET
+CLIENT
+TEAM_MEMBER
+DEPLOYMENT
+BACKUP
+INCIDENT
+TASK
+MILESTONE
+RELEASE
+LICENSE
+SUBSCRIPTION
+EXPENSE
+REVENUE
+CREDENTIAL_REFERENCE
+SECURITY_EVENT
+AUDIT_LOG
+
+Every entity must have:
+
+* Unique ID
+* Name
+* Description
+* Status
+* Owner
+* Project relationship
+* Created date
+* Updated date
+* Metadata
+* Tags
+* Notes
+* Audit history
+
+---
+
+# 4. MASTER REGISTRY
+
+Create a central:
+
+## MASTER REGISTRY
+
+This is the authoritative index of the entire ecosystem.
+
+The registry must provide relationships between:
+
+PROJECT → SERVER → DATABASE → DOMAIN → REPOSITORY → APPLICATION → AI AGENT → WORKFLOW → API → ENVIRONMENT → DEPLOYMENT
+
+Example:
+
+PRJ-003
+│
+├── SRV-007
+├── DB-003
+├── DOM-005
+├── REP-003
+├── APP-003
+├── AGT-014
+├── AGT-015
+├── WF-031
+├── WF-032
+├── API-014
+├── ENV-DEV
+├── ENV-STAGING
+└── ENV-PROD
+
+The system must allow the user to navigate these relationships visually.
+
+---
+
+# 5. PROJECT MANAGEMENT
+
+Create a Projects module.
+
+Each project must have:
+
+Project ID
+Project Name
+Project Type
+Category
+Description
+Owner
+Status
+Priority
+Health
+Stage
+Start Date
+Target Launch Date
+Production Status
+Revenue Status
+Current Version
+Current Sprint
+Repository
+Server
+Database
+Domains
+AI Agents
+Automations
+Clients
+Team
+Documentation
+Financial Data
+
+Project statuses:
+
+* IDEA
+* PLANNING
+* DEVELOPMENT
+* TESTING
+* STAGING
+* PRODUCTION
+* MAINTENANCE
+* PAUSED
+* ARCHIVED
+* RETIRED
+
+Project health:
+
+* HEALTHY
+* ATTENTION
+* WARNING
+* CRITICAL
+
+---
+
+# 6. PROJECT DETAIL PAGE
+
+Every project must have a dedicated command page.
+
+Example:
+
+PRJ-003 — CLINIC OS
+
+Display:
+
+PROJECT HEALTH
+██████████ 92%
+
+STATUS
+PRODUCTION
+
+VERSION
+v1.4.2
+
+SERVER
+SRV-007
+
+DATABASE
+DB-003
+
+DOMAIN
+clinic.example.com
+
+REPOSITORY
+Git Repository
+
+AI AGENTS
+14
+
+N8N WORKFLOWS
+38
+
+APIs
+12
+
+TEAM
+6
+
+MONTHLY COST
+$XXX
+
+MONTHLY REVENUE
+$XXX
+
+UPTIME
+99.98%
+
+---
+
+# 7. SERVER MANAGEMENT
+
+Create a complete Server Inventory.
+
+Server fields:
+
+Server ID
+Server Name
+Provider
+IP Address
+Region
+Country
+Operating System
+CPU
+RAM
+Storage
+Bandwidth
+Environment
+Project
+Status
+Uptime
+Last Backup
+Last Security Update
+Expiration Date
+Cost
+Purpose
+Notes
+
+Server statuses:
+
+ONLINE
+OFFLINE
+WARNING
+MAINTENANCE
+DECOMMISSIONED
+
+Never expose sensitive credentials directly.
+
+Store only:
+
+Credential Reference
+
+Example:
+
+VAULT-SRV-007
+
+---
+
+# 8. DATABASE MANAGEMENT
+
+Create Database Registry.
+
+Fields:
+
+Database ID
+Database Name
+Provider
+Engine
+Version
+Project
+Environment
+Region
+Storage
+Usage
+Status
+Backup Status
+Last Backup
+Connection Reference
+Migration Version
+Created Date
+
+Supported examples:
+
+PostgreSQL
+Supabase
+MySQL
+Redis
+MongoDB
+SQLite
+Other
+
+Do not store raw passwords.
+
+Use:
+
+DATABASE_SECRET_REFERENCE
+
+---
+
+# 9. DOMAIN MANAGEMENT
+
+Create Domain Registry.
+
+Fields:
+
+Domain ID
+Domain Name
+Project
+Registrar
+DNS Provider
+Environment
+SSL Status
+SSL Expiration
+Auto Renewal
+Status
+Purpose
+
+Automatically calculate:
+
+Days Until SSL Expiration
+
+Display alerts:
+
+90 days
+60 days
+30 days
+14 days
+7 days
+Expired
+
+---
+
+# 10. REPOSITORY MANAGEMENT
+
+Each project can have one or multiple repositories.
+
+Fields:
+
+Repository ID
+Repository Name
+Provider
+URL
+Project
+Main Branch
+Current Version
+Last Commit
+Last Deployment
+Visibility
+Status
+
+Supported providers should be architecturally extensible.
+
+---
+
+# 11. ENVIRONMENT MANAGEMENT
+
+Every project must support:
+
+DEVELOPMENT
+STAGING
+PRODUCTION
+
+Each environment has independent:
+
+Servers
+Databases
+Domains
+APIs
+Variables
+Deployments
+Logs
+Monitoring
+
+Clearly visually distinguish environments.
+
+Production must have stronger warning indicators.
+
+---
+
+# 12. AI AGENT MANAGEMENT
+
+Create:
+
+## AI AGENT COMMAND CENTER
+
+Each agent receives:
+
+AGT-001
+AGT-002
+AGT-003
+
+Agent fields:
+
+Agent ID
+Name
+Project
+Role
+Description
+Model
+Provider
+Version
+System Prompt Reference
+Knowledge Base
+Tools
+Workflows
+APIs
+Permissions
+Status
+Health
+Last Execution
+Success Rate
+Cost
+Owner
+
+Agent statuses:
+
+ACTIVE
+INACTIVE
+TESTING
+ERROR
+DEPRECATED
+
+The architecture must allow:
+
+10 agents
+100 agents
+1,000 agents
+10,000 agents
+
+without changing the database architecture.
+
+---
+
+# 13. AUTOMATION / N8N MANAGEMENT
+
+Create an Automation Registry.
+
+Every workflow receives:
+
+WF-001
+WF-002
+WF-003
+
+Fields:
+
+Workflow ID
+Workflow Name
+Project
+Platform
+Purpose
+Trigger
+Status
+Version
+Last Execution
+Execution Success Rate
+Failure Count
+Owner
+Dependencies
+
+Example naming convention:
+
+[PRJ-001] Customer Onboarding
+
+[PRJ-003] Patient Registration
+
+[PRJ-003] Appointment Reminder
+
+[PRJ-004] Store Synchronization
+
+The dashboard must allow filtering workflows by Project ID.
+
+---
+
+# 14. API & INTEGRATION MANAGEMENT
+
+Create:
+
+## API & INTEGRATION HUB
+
+Entities:
+
+API
+WEBHOOK
+INTEGRATION
+SERVICE
+OAUTH CONNECTION
+
+Fields:
+
+ID
+Name
+Provider
+Project
+Purpose
+Environment
+Status
+Health
+Last Check
+Expiration
+Owner
+
+Examples:
+
+Stripe
+Supabase
+OpenAI
+Anthropic
+Google
+Meta
+n8n
+GitHub
+Cloudflare
+Email providers
+SMS providers
+
+Do not expose API secrets.
+
+Only show:
+
+Connected
+Disconnected
+Expired
+Error
+
+---
+
+# 15. DOCUMENTATION CENTER
+
+Create:
+
+## KNOWLEDGE VAULT
+
+Every project must have structured documentation.
+
+Categories:
+
+Architecture
+Business
+Technical
+Database
+API
+Security
+Deployment
+Operations
+AI
+Automation
+Contracts
+Finance
+Marketing
+User Guides
+SOPs
+Changelog
+
+Documents receive:
+
+DOC-001
+DOC-002
+DOC-003
+
+Every document must belong to:
+
+PROJECT
+or
+GLOBAL
+
+---
+
+# 16. ASSET MANAGEMENT
+
+Create Asset Registry.
+
+Asset types:
+
+Images
+Videos
+Logos
+Brand files
+UI designs
+Documents
+Audio
+Presentations
+Contracts
+Product assets
+Marketing assets
+
+Each asset:
+
+AST-001
+
+Must include:
+
+Project
+Category
+Version
+Owner
+Storage location
+Created
+Updated
+Status
+
+---
+
+# 17. BACKUP MANAGEMENT
+
+Create:
+
+## BACKUP COMMAND CENTER
+
+Track:
+
+Server backups
+Database backups
+Repository backups
+Asset backups
+Configuration backups
+
+Each backup:
+
+BKP-001
+
+Fields:
+
+Backup ID
+Project
+Resource
+Backup Type
+Provider
+Created
+Size
+Status
+Retention
+Verified
+Restore Test
+Last Restore Test
+
+Support 3-2-1 backup strategy.
+
+Dashboard should immediately show:
+
+BACKUP HEALTH
+
+Healthy
+Warning
+Critical
+
+---
+
+# 18. DEPLOYMENT MANAGEMENT
+
+Create:
+
+## DEPLOYMENT CENTER
+
+Track:
+
+Project
+Application
+Environment
+Version
+Deployment ID
+Deployment Date
+Deployed By
+Status
+Duration
+Rollback Available
+
+Statuses:
+
+QUEUED
+RUNNING
+SUCCESS
+FAILED
+ROLLED_BACK
+
+Every production deployment must create an audit record.
+
+---
+
+# 19. SECURITY CENTER
+
+Create:
+
+## SECURITY COMMAND CENTER
+
+Monitor:
+
+SSL certificates
+Domain status
+Server status
+Database status
+Credential references
+Access permissions
+Failed deployments
+Suspicious events
+Security incidents
+Expired credentials
+Expired integrations
+
+Never store raw secrets in the application database.
+
+Implement:
+
+Role-Based Access Control
+Audit Logs
+Session Management
+Permission System
+2FA-ready architecture
+Secret References
+
+---
+
+# 20. FINANCIAL CONTROL
+
+Create:
+
+## PROJECT FINANCE
+
+Track:
+
+Revenue
+Expenses
+Server costs
+Software subscriptions
+API costs
+AI model costs
+Marketing costs
+Contractor costs
+Other expenses
+
+Calculate:
+
+Monthly Revenue
+Monthly Expenses
+Monthly Profit
+Annual Revenue
+Annual Expenses
+Annual Profit
+Project ROI
+Infrastructure Cost
+AI Cost
+
+Each transaction:
+
+FIN-001
+
+---
+
+# 21. EXECUTIVE DASHBOARD
+
+The main homepage must be:
+
+# MR.ESS COMMAND CENTER
+
+Top-level KPIs:
+
+TOTAL PROJECTS
+ACTIVE PROJECTS
+PRODUCTION PROJECTS
+SERVERS
+DATABASES
+DOMAINS
+AI AGENTS
+AUTOMATIONS
+APIs
+MONTHLY REVENUE
+MONTHLY COST
+MONTHLY PROFIT
+
+Then:
+
+## SYSTEM HEALTH
+
+Servers
+Databases
+Domains
+SSL
+Backups
+APIs
+AI Agents
+Automations
+
+Use visual health indicators.
+
+---
+
+# 22. ALERT CENTER
+
+Create a unified:
+
+## ALERT CENTER
+
+Alerts such as:
+
+Server Offline
+Database Backup Failed
+SSL Expiring
+Domain Expiring
+API Expired
+Workflow Failed
+AI Agent Error
+Deployment Failed
+Storage Critical
+Server Expiration
+Payment Due
+Subscription Expiring
+
+Alert levels:
+
+INFO
+LOW
+MEDIUM
+HIGH
+CRITICAL
+
+Each alert:
+
+ALERT-001
+
+---
+
+# 23. GLOBAL SEARCH
+
+Create a powerful global search.
+
+User can search:
+
+PRJ-003
+Clinic OS
+SRV-007
+DB-003
+AGT-014
+WF-031
+domain name
+repository
+API
+document
+client
+
+Search results must show entity type.
+
+Example:
+
+SEARCH: PRJ-003
+
+PROJECT
+Clinic OS
+
+SERVER
+SRV-007
+
+DATABASE
+DB-003
+
+AI AGENTS
+14
+
+WORKFLOWS
+38
+
+DOMAINS
+2
+
+APIs
+12
+
+DOCUMENTS
+46
+
+---
+
+# 24. COMMAND PALETTE
+
+Implement:
+
+CTRL + K
+
+Command Palette.
+
+Commands:
+
+Create Project
+Create Server
+Create Database
+Create Domain
+Create AI Agent
+Create Workflow
+Create API
+Create Document
+Create Client
+Create Task
+Search
+Open Project
+Open Server
+Open Database
+View Alerts
+View Deployments
+View Security
+View Finance
+
+---
+
+# 25. GLOBAL ARCHITECTURE MAP
+
+Create an interactive visual map.
+
+Example:
+
+KemetRise
+│
+├── Projects
+│
+├── Infrastructure
+│   ├── Servers
+│   ├── Databases
+│   ├── Domains
+│   └── Storage
+│
+├── Intelligence
+│   ├── AI Agents
+│   ├── Knowledge
+│   └── Models
+│
+├── Automation
+│   ├── n8n
+│   ├── Workflows
+│   └── Triggers
+│
+├── Applications
+│
+├── APIs
+│
+└── Operations
+
+Allow clicking nodes to open entity details.
+
+---
+
+# 26. ACTIVITY TIMELINE
+
+Create a global timeline.
+
+Track:
+
+Project created
+Server added
+Database created
+Deployment executed
+Agent created
+Workflow executed
+Document updated
+Domain renewed
+Backup completed
+Security incident
+Financial transaction
+
+Example:
+
+31 Aug 2026
+PRJ-003 deployed v1.4.2
+
+31 Aug 2026
+DB-003 backup verified
+
+30 Aug 2026
+AGT-014 updated
+
+---
+
+# 27. AUDIT LOG
+
+Every important action must be recorded.
+
+Fields:
+
+Timestamp
+User
+Action
+Entity
+Entity ID
+Old Value
+New Value
+IP / Session Reference where appropriate
+
+Examples:
+
+PROJECT_CREATED
+PROJECT_UPDATED
+SERVER_ADDED
+DATABASE_UPDATED
+DEPLOYMENT_STARTED
+DEPLOYMENT_COMPLETED
+USER_PERMISSION_CHANGED
+
+Audit logs should be immutable from normal user interfaces.
+
+---
+
+# 28. ROLE SYSTEM
+
+Prepare RBAC.
+
+Roles:
+
+SUPER_ADMIN
+ADMIN
+PROJECT_MANAGER
+DEVELOPER
+DEVOPS
+AI_ENGINEER
+FINANCE
+OPERATIONS
+VIEWER
+
+Permissions must be granular.
+
+Examples:
+
+projects.read
+projects.create
+projects.update
+projects.delete
+
+servers.read
+servers.create
+servers.update
+
+finance.read
+finance.create
+
+security.read
+
+audit.read
+
+Production destructive actions should require elevated permission.
+
+---
+
+# 29. DATABASE ARCHITECTURE
+
+Use a normalized relational database.
+
+Recommended:
+
+PostgreSQL
+
+Core tables:
+
+projects
+servers
+databases
+domains
+repositories
+applications
+environments
+apis
+integrations
+ai_agents
+workflows
+documents
+assets
+clients
+team_members
+deployments
+backups
+incidents
+tasks
+milestones
+releases
+licenses
+subscriptions
+financial_transactions
+credential_references
+security_events
+alerts
+audit_logs
+tags
+entity_tags
+
+Use:
+
+Primary Keys
+Foreign Keys
+Indexes
+Constraints
+Timestamps
+Soft Delete where appropriate
+
+Never hard-delete critical infrastructure records unless explicitly authorized.
+
+---
+
+# 30. PROJECT RELATIONSHIP MODEL
+
+Use relational references.
+
+Example:
+
+projects.id
+↓
+servers.project_id
+
+projects.id
+↓
+databases.project_id
+
+projects.id
+↓
+domains.project_id
+
+projects.id
+↓
+repositories.project_id
+
+projects.id
+↓
+ai_agents.project_id
+
+projects.id
+↓
+workflows.project_id
+
+This creates a complete project graph.
+
+---
+
+# 31. VERSIONING
+
+Everything important must support versioning.
+
+Examples:
+
+Project:
+
+v1.0.0
+
+Agent:
+
+v2.1.0
+
+Workflow:
+
+v1.3.0
+
+Documentation:
+
+v4.0
+
+Use semantic versioning where applicable.
+
+Maintain:
+
+Current Version
+Previous Version
+Release History
+Changelog
+
+---
+
+# 32. DESIGN SYSTEM
+
+Visual identity:
+
+Brand:
+
+KemetRise — Legacy Nexus
+
+Style:
+
+Futuristic Enterprise
+Dark Command Center
+Luxury Technology
+Intelligence System
+
+Use:
+
+Deep dark backgrounds
+Elegant metallic/royal accents
+Subtle gradients
+Glass / translucent surfaces where appropriate
+Thin borders
+Soft shadows
+High information density
+Clean typography
+Minimal unnecessary decoration
+
+Do NOT overuse neon.
+
+The system must feel expensive and serious.
+
+---
+
+# 33. BRANDING
+
+Header:
+
+KemetRise — Legacy Nexus
+
+Sub-brand:
+
+MR.ESS PROJECT OPERATING SYSTEM
+
+Primary title:
+
+CONTROL TOWER
+
+Possible tagline:
+
+**One Command Center. Every Project. Total Visibility.**
+
+Use KemetRise visual language consistently.
+
+Logo area:
+
+KemetRise
+
+Navigation should feel like an enterprise command console.
+
+---
+
+# 34. NAVIGATION
+
+Main navigation:
+
+CONTROL TOWER
+
+PROJECTS
+
+INFRASTRUCTURE
+├── Servers
+├── Databases
+├── Domains
+├── Storage
+
+APPLICATIONS
+
+INTELLIGENCE
+├── AI Agents
+├── Models
+├── Knowledge
+
+AUTOMATION
+├── Workflows
+├── n8n
+├── Triggers
+
+DEVELOPMENT
+├── Repositories
+├── Deployments
+├── Releases
+
+INTEGRATIONS
+├── APIs
+├── Services
+├── Webhooks
+
+DOCUMENTATION
+
+SECURITY
+
+BACKUPS
+
+FINANCE
+
+OPERATIONS
+
+ALERTS
+
+AUDIT LOG
+
+SETTINGS
+
+---
+
+# 35. MOBILE RESPONSIVENESS
+
+Desktop is the primary command-center interface.
+
+But the system must be fully responsive.
+
+Mobile priority:
+
+Alerts
+Project status
+Infrastructure health
+AI Agent health
+Workflow status
+Critical notifications
+
+---
+
+# 36. API-FIRST ARCHITECTURE
+
+The application must expose a clean API layer.
+
+Future integrations must be possible with:
+
+n8n
+AI Agents
+Claude
+OpenAI
+Gemini
+Supabase
+GitHub
+Cloudflare
+Monitoring platforms
+Financial systems
+Other KemetRise systems
+
+Do not tightly couple business logic to UI components.
+
+---
+
+# 37. AI-NATIVE ARCHITECTURE
+
+The system must be designed from day one to support AI.
+
+Future capabilities:
+
+AI Project Manager
+AI DevOps Agent
+AI Security Agent
+AI Finance Agent
+AI Documentation Agent
+AI Infrastructure Agent
+AI Operations Agent
+
+AI agents should eventually be able to query:
+
+Projects
+Servers
+Databases
+Workflows
+Alerts
+Deployments
+Documentation
+Finance
+
+through controlled APIs and permissions.
+
+---
+
+# 38. AI COMMAND CENTER — FUTURE READY
+
+Create an architectural placeholder for:
+
+## KemetRise Intelligence Layer
+
+Capabilities:
+
+Ask:
+
+"What projects are currently unhealthy?"
+
+"What servers need attention?"
+
+"Which SSL certificates expire within 30 days?"
+
+"Which projects are costing more than they generate?"
+
+"Which workflows failed today?"
+
+"Which AI agents have declining success rates?"
+
+"Show me everything related to PRJ-003."
+
+The AI layer must NOT have unrestricted database access.
+
+Use controlled tools / APIs / permission scopes.
+
+---
+
+# 39. NOTIFICATION ENGINE
+
+Build notification architecture supporting:
+
+In-App
+Email
+Webhook
+Future SMS
+Future WhatsApp
+Future Telegram
+
+Notifications should be event-driven.
+
+Example:
+
+SSL_EXPIRING
+BACKUP_FAILED
+SERVER_DOWN
+DEPLOYMENT_FAILED
+AGENT_ERROR
+
+---
+
+# 40. AUTOMATION ENGINE
+
+Create event architecture.
+
+Example:
+
+IF:
+
+backup.status = failed
+
+THEN:
+
+create ALERT
+
+AND:
+
+notify ADMIN
+
+AND:
+
+create INCIDENT
+
+AND:
+
+log AUDIT_EVENT
+
+This architecture should later integrate with n8n.
+
+---
+
+# 41. DASHBOARD WIDGET SYSTEM
+
+Dashboard widgets must be modular.
+
+Each widget can be:
+
+enabled
+disabled
+moved
+resized
+
+Future widgets can be added without redesigning the dashboard.
+
+Examples:
+
+Project Health
+Server Health
+Database Health
+Revenue
+Expenses
+AI Agent Health
+Workflow Success
+Alerts
+Deployments
+Backups
+Upcoming Expirations
+
+---
+
+# 42. DATA OWNERSHIP
+
+Every record must clearly indicate:
+
+GLOBAL
+or
+PROJECT-SPECIFIC
+
+Example:
+
+GLOBAL:
+
+KemetRise brand
+Global users
+Global templates
+
+PROJECT:
+
+Clinic OS database
+Clinic OS server
+Clinic OS domain
+Clinic OS AI agents
+
+This prevents cross-project contamination.
+
+---
+
+# 43. SHARED RESOURCES
+
+Create:
+
+## SHARED RESOURCE CENTER
+
+Shared resources may include:
+
+Common AI tools
+Common libraries
+Brand assets
+UI components
+Templates
+Global APIs
+Global infrastructure
+Common documentation
+
+Shared resources must NOT be duplicated unnecessarily across projects.
+
+---
+
+# 44. PROJECT TEMPLATE SYSTEM
+
+Create:
+
+## PROJECT FACTORY
+
+Ability to create a new project from a template.
+
+Example:
+
+NEW PROJECT
+
+↓
+
+Project Name
+
+Project Type
+
+Owner
+
+Environment
+
+↓
+
+Automatically create:
+
+Project ID
+
+Documentation structure
+
+Database structure
+
+Repository reference
+
+Environment records
+
+Default folders
+
+Default permissions
+
+Default dashboard
+
+Default monitoring
+
+Default backup configuration
+
+Default audit configuration
+
+The Project Factory is critical.
+
+---
+
+# 45. PROJECT CREATION EXAMPLE
+
+When creating:
+
+"Restaurant OS"
+
+System generates:
+
+PRJ-015
+
+Then:
+
+PRJ-015
+├── DEV
+├── STAGING
+├── PROD
+├── Database
+├── Server
+├── Domain
+├── Repository
+├── Documentation
+├── AI
+├── Automation
+├── APIs
+├── Security
+├── Backup
+└── Finance
+
+The user should not need to manually create every component.
+
+---
+
+# 46. ARCHIVE SYSTEM
+
+Never simply delete old projects.
+
+Archive them.
+
+Archived projects remain searchable.
+
+Store:
+
+Final Version
+Final Documentation
+Final Infrastructure
+Final Financial Data
+Final Backup Reference
+Retirement Date
+Reason
+
+---
+
+# 47. ERROR HANDLING
+
+Every critical operation must provide:
+
+Success
+Failure
+Reason
+Retry
+Audit Record
+
+Never silently fail.
+
+---
+
+# 48. OBSERVABILITY
+
+Prepare architecture for:
+
+Logs
+Metrics
+Health Checks
+Uptime
+Latency
+Error Rate
+Deployment Status
+
+Each infrastructure resource should eventually support health monitoring.
+
+---
+
+# 49. PERFORMANCE
+
+The application must remain performant with:
+
+100 projects
+1,000 projects
+10,000 AI agents
+100,000 workflows
+Millions of audit events
+
+Use:
+
+Pagination
+Indexes
+Lazy Loading
+Caching
+Background Jobs
+Event-driven architecture
+
+Do not load the entire database into the frontend.
+
+---
+
+# 50. SECURITY PRINCIPLES
+
+Implement:
+
+Least Privilege
+RBAC
+Secure Sessions
+Encrypted Sensitive Data
+Secret References
+Audit Logging
+Input Validation
+Rate Limiting
+CSRF Protection where applicable
+XSS Protection
+SQL Injection Protection
+Secure Headers
+
+Never expose:
+
+Passwords
+API Keys
+Database credentials
+Private tokens
+SSH private keys
+
+---
+
+# 51. BACKEND ARCHITECTURE
+
+Use clean separation:
+
+UI
+
+↓
+
+API
+
+↓
+
+Business Logic
+
+↓
+
+Services
+
+↓
+
+Database
+
+↓
+
+External Integrations
+
+Do not put business logic directly inside UI components.
+
+Use modular services.
+
+---
+
+# 52. FRONTEND ARCHITECTURE
+
+Use reusable components:
+
+CommandCenter
+ProjectCard
+ProjectHealth
+ServerCard
+DatabaseCard
+AgentCard
+WorkflowCard
+AlertCard
+Timeline
+EntityTable
+EntityDrawer
+EntityDetails
+Search
+CommandPalette
+Charts
+HealthIndicator
+StatusBadge
+
+Avoid duplicated components.
+
+---
+
+# 53. COMPONENT PRINCIPLE
+
+Every reusable component must be designed as:
+
+DATA
++
+STATE
++
+PERMISSIONS
++
+ACTIONS
+
+This allows future AI agents to interact with the same underlying operations.
+
+---
+
+# 54. DEVELOPMENT RULE
+
+DO NOT destroy existing systems.
+
+If this Control Tower is being integrated into an existing KemetRise environment:
+
+* Preserve existing data
+* Preserve existing code
+* Preserve existing workflows
+* Preserve existing database structures
+* Preserve existing documentation
+
+Build on top of existing infrastructure.
+
+Never perform destructive migrations without explicit authorization.
+
+---
+
+# 55. MIGRATION SAFETY
+
+Any migration must include:
+
+Backup
+Migration Plan
+Rollback Plan
+Validation
+Execution
+Verification
+Audit
+
+No destructive migration should happen automatically.
+
+---
+
+# 56. DEMO DATA
+
+Initially create realistic demo data.
+
+Example projects:
+
+PRJ-001 — KemetRise Core
+PRJ-002 — Miss Eve
+PRJ-003 — Clinic OS
+PRJ-004 — Digital Mall
+PRJ-005 — Restaurant OS
+
+Create realistic:
+
+Servers
+Databases
+Domains
+AI Agents
+Workflows
+Alerts
+Deployments
+
+so the dashboard immediately demonstrates the system.
+
+Clearly label demo data.
+
+---
+
+# 57. PROJECT HEALTH SCORE
+
+Create a calculated Project Health Score.
+
+Example factors:
+
+Infrastructure
+20%
+
+Database
+15%
+
+Security
+15%
+
+Backups
+15%
+
+Deployments
+10%
+
+AI Agents
+10%
+
+Automations
+5%
+
+Documentation
+5%
+
+Financial
+5%
+
+Score:
+
+90–100 HEALTHY
+
+75–89 GOOD
+
+50–74 ATTENTION
+
+25–49 WARNING
+
+0–24 CRITICAL
+
+The formula must be configurable.
+
+---
+
+# 58. EXECUTIVE INTELLIGENCE
+
+The Control Tower should answer:
+
+How many projects are active?
+
+Which projects are in production?
+
+Which projects are unhealthy?
+
+Which servers are critical?
+
+Which databases require backup?
+
+Which domains expire soon?
+
+Which workflows are failing?
+
+Which AI agents are failing?
+
+Which projects cost the most?
+
+Which projects generate the most revenue?
+
+What requires MR.ESS attention today?
+
+---
+
+# 59. "ATTENTION REQUIRED" PANEL
+
+Make this one of the most important dashboard areas.
+
+Example:
+
+ATTENTION REQUIRED
+
+🔴 SRV-007 — Server Offline
+
+🔴 WF-031 — 7 Failed Executions
+
+🟠 DOM-005 — SSL expires in 12 days
+
+🟠 DB-003 — Backup not verified
+
+🟡 PRJ-009 — Revenue below target
+
+The goal is:
+
+**MR.ESS opens the Control Tower and immediately knows what requires attention.**
+
+---
+
+# 60. COMMAND CENTER PHILOSOPHY
+
+The interface must answer three questions immediately:
+
+1. WHAT DO I OWN?
+2. WHAT IS HAPPENING?
+3. WHAT NEEDS MY ATTENTION?
+
+The system must minimize cognitive load.
+
+---
+
+# 61. TECHNICAL DELIVERABLES
+
+Produce:
+
+1. Full application
+2. Database schema
+3. Database migrations
+4. Seed/demo data
+5. API architecture
+6. Authentication
+7. RBAC
+8. Audit system
+9. Dashboard
+10. Project module
+11. Infrastructure modules
+12. AI module
+13. Automation module
+14. Documentation module
+15. Backup module
+16. Security module
+17. Finance module
+18. Notification architecture
+19. Project Factory
+20. Global Search
+21. Command Palette
+22. Architecture Map
+23. Deployment architecture
+24. README
+25. Technical documentation
+
+---
+
+# 62. DOCUMENTATION REQUIREMENTS
+
+Generate:
+
+ARCHITECTURE.md
+
+DATABASE.md
+
+API.md
+
+SECURITY.md
+
+DEPLOYMENT.md
+
+PROJECT_MODEL.md
+
+AI_ARCHITECTURE.md
+
+AUTOMATION.md
+
+BACKUP_STRATEGY.md
+
+RBAC.md
+
+OPERATIONS.md
+
+README.md
+
+Every major architectural decision must be documented.
+
+---
+
+# 63. CODE QUALITY
+
+Code must be:
+
+Clean
+Modular
+Typed
+Maintainable
+Testable
+Documented
+Secure
+
+Avoid:
+
+Hardcoded values
+Duplicated logic
+Magic numbers
+Hidden dependencies
+Tightly coupled architecture
+
+Use configuration variables.
+
+---
+
+# 64. TESTING
+
+Create tests for:
+
+Authentication
+Authorization
+Project creation
+Server creation
+Database creation
+Entity relationships
+Search
+Alerts
+Audit logs
+RBAC
+Deployment
+Backup
+Project Factory
+
+Include integration tests for critical workflows.
+
+---
+
+# 65. ACCEPTANCE TEST
+
+The system is NOT complete until the following works:
+
+Create Project
+
+↓
+
+PRJ-XXX generated
+
+↓
+
+Create Server
+
+↓
+
+Attach Server to Project
+
+↓
+
+Create Database
+
+↓
+
+Attach Database
+
+↓
+
+Create Domain
+
+↓
+
+Create Repository
+
+↓
+
+Create AI Agent
+
+↓
+
+Create Workflow
+
+↓
+
+Create API
+
+↓
+
+View complete Project Command Page
+
+↓
+
+Generate health score
+
+↓
+
+Generate alerts
+
+↓
+
+Record audit logs
+
+All relationships must work.
+
+---
+
+# 66. FUTURE EXPANSION
+
+Architecture must support future KemetRise systems:
+
+KemetRise Mall OS
+KemetRise Clinic OS
+KemetRise Education OS
+KemetRise Real Estate OS
+KemetRise Restaurant OS
+KemetRise Content OS
+KemetRise AI Employee System
+KemetRise Academy
+KemetRise Rescue
+KemetRise Digital Character OS
+KemetRise Business OS
+KemetRise Enterprise OS
+
+The Control Tower must become the umbrella management layer.
+
+---
+
+# 67. FUTURE KEMETRISE ECOSYSTEM
+
+Target architecture:
+
+```
+                KEMETRISE
+             LEGACY NEXUS
+                   │
+             MR.ESS CONTROL
+                TOWER
+                   │
+    ┌──────────────┼──────────────┐
+    │              │              │
+PROJECTS      INFRASTRUCTURE   INTELLIGENCE
+    │              │              │
+    │          Servers          AI Agents
+    │          Databases        Models
+    │          Domains          Knowledge
+    │
+    ├── Clinic OS
+    ├── Mall OS
+    ├── Education OS
+    ├── Restaurant OS
+    ├── Real Estate OS
+    ├── Content OS
+    └── Future Projects
+                   │
+             AUTOMATION
+                   │
+                 n8n
+                   │
+                APIs
+                   │
+           EXTERNAL SYSTEMS
+```
+
+---
+
+# 68. NON-NEGOTIABLE RULES
+
+RULE 1:
+
+Do not build a generic admin dashboard.
+
+RULE 2:
+
+Build an Enterprise Control Tower.
+
+RULE 3:
+
+Everything must have an ID.
+
+RULE 4:
+
+Everything must have ownership.
+
+RULE 5:
+
+Everything must have a relationship.
+
+RULE 6:
+
+Everything important must be auditable.
+
+RULE 7:
+
+Never store raw secrets.
+
+RULE 8:
+
+Never destroy existing data without explicit authorization.
+
+RULE 9:
+
+Architecture must be scalable.
+
+RULE 10:
+
+AI integration must be planned from the beginning.
+
+RULE 11:
+
+Projects must remain logically isolated.
+
+RULE 12:
+
+Shared resources must be explicitly marked GLOBAL.
+
+RULE 13:
+
+Production must always be visually and operationally distinguished.
+
+RULE 14:
+
+Critical operations require permission.
+
+RULE 15:
+
+The Control Tower must always prioritize:
+
+VISIBILITY
+CONTROL
+SECURITY
+SCALABILITY
+AUTOMATION
+INTELLIGENCE
+
+---
+
+# 69. FINAL PRODUCT EXPERIENCE
+
+When MR.ESS logs in, the first screen should feel like entering the command center of a technology company.
+
+The system should communicate:
+
+"I can see everything."
+
+"I know what is healthy."
+
+"I know what is failing."
+
+"I know what needs attention."
+
+"I know where every resource belongs."
+
+"I can trace every project."
+
+"I can understand the entire KemetRise ecosystem from one place."
+
+---
+
+# 70. BUILD ORDER
+
+Do NOT attempt to build everything randomly.
+
+Build in this order:
+
+PHASE 1
+Foundation
+
+* Authentication
+* Database
+* Users
+* RBAC
+* Core entities
+* Master Registry
+
+PHASE 2
+Projects
+
+* Project management
+* Project detail
+* Project relationships
+* Project Factory
+
+PHASE 3
+Infrastructure
+
+* Servers
+* Databases
+* Domains
+* Repositories
+* Environments
+
+PHASE 4
+Intelligence
+
+* AI Agents
+* Models
+* Knowledge
+
+PHASE 5
+Automation
+
+* n8n
+* Workflows
+* Triggers
+
+PHASE 6
+Operations
+
+* Deployments
+* Backups
+* Alerts
+* Incidents
+* Audit
+
+PHASE 7
+Business
+
+* Clients
+* Finance
+* Revenue
+* Expenses
+
+PHASE 8
+Intelligence Layer
+
+* AI Control Tower
+* Natural language queries
+* AI recommendations
+* Automated operational insights
+
+---
+
+# 71. FINAL INSTRUCTION
+
+Do not merely create screens.
+
+Create the underlying operating system.
+
+Every UI element must correspond to a real data model, real relationship, real state, or real operation.
+
+Avoid fake buttons.
+
+Avoid placeholder functionality presented as completed functionality.
+
+If a feature cannot yet be implemented, clearly label it as:
+
+COMING SOON
+or
+ARCHITECTURE READY
+
+The architecture must make future implementation straightforward.
+
+Prioritize:
+
+1. Correct architecture
+2. Data integrity
+3. Security
+4. Scalability
+5. Maintainability
+6. UX
+7. Visual excellence
+
+The final result should be worthy of becoming the internal:
+
+# KEMETRISE LEGACY NEXUS
+
+# MR.ESS PROJECT OPERATING SYSTEM
+
+## CONTROL TOWER
+
+**One Command Center. Every Project. Total Visibility.**
