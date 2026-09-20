@@ -9,12 +9,14 @@
 **Document ID:** KEM-055
 **System ID:** MR-ESS-POS
 **Owner:** MR.ESS
-**Version:** 1.1.0
+**Version:** 1.2.0
 **Status:** APPROVED — READY FOR SQL GENERATION (pending explicit authorization to begin)
 **Date:** 2026-09-03
-**Direct Parents (authority order):** KEM-054 (v1.1.0) → KEM-053 (v1.2.0) → KEM-052 → KEM-051 → KEM-000–050 (historical/reconciliation only)
+**Direct Parents (authority order):** KEM-054 (v1.2.0) → KEM-053 (v1.2.0) → KEM-052 → KEM-051 → KEM-000–050 (historical/reconciliation only)
 
-**Revision note (v1.1.0):** OQ-01, R-01, and R-02 are resolved and approved by Mr. Ess. OQ-01: the `identity.user_roles.scope_project_id` FK is confirmed added via the explicit `P06B` migration after `core.projects` exists (P03 → P06 → P06B), not relied upon via nullability. R-01: the surrogate-PK + separate UNIQUE-index refinement for `identity.user_roles` is confirmed as the correct PostgreSQL-valid implementation of KEM-053's intended logical uniqueness. R-02: the generic `seed_batch_id` column is removed; seed identification is treated as a migration/seed-execution concern (natural-key-scoped, deterministic, idempotent `DELETE`/`INSERT ... ON CONFLICT` — no schema change). A full internal consistency pass (Section 20.1) was performed against all fifteen criteria Mr. Ess specified (reported as sixteen table rows, since one criterion is split into a function-existence row and a trigger-existence row against the same evidence); it succeeded with no remaining defect, so this document's overall status is now **READY FOR SQL GENERATION**. Neither KEM-053 nor KEM-054 was modified.
+**Revision note (v1.1.0):** OQ-01, R-01, and R-02 are resolved and approved by Mr. Ess. OQ-01: the `identity.user_roles.scope_project_id` FK is confirmed added via the explicit `P06B` migration after `core.projects` exists (P03 → P06 → P06B), not relied upon via nullability. R-01: the surrogate-PK + separate UNIQUE-index refinement for `identity.user_roles` is confirmed as the correct PostgreSQL-valid implementation of KEM-053's intended logical uniqueness. R-02: the generic `seed_batch_id` column is removed; seed identification is treated as a migration/seed-execution concern (natural-key-scoped, deterministic, idempotent `DELETE`/`INSERT ... ON CONFLICT` — no schema change). A full internal consistency pass (Section 21.1) was performed against all fifteen criteria Mr. Ess specified (reported as sixteen table rows, since one criterion is split into a function-existence row and a trigger-existence row against the same evidence); it succeeded with no remaining defect, so this document's overall status is now **READY FOR SQL GENERATION**. Neither KEM-053 nor KEM-054 was modified.
+
+**Revision note (v1.2.0):** Static validation of the generated SQL migrations found that `core.projects.owner_id` (`NOT NULL`, no default) cannot be populated for `PRJ-000` by a pure SQL migration, since no real `identity.users` row exists at migration time. Mr. Ess adopted **Option A — Bootstrap Sequencing Correction**: `core.projects.owner_id` remains `NOT NULL` unchanged; **KEM-053 was NOT modified**; PRJ-000 creation is removed from migration `P21a` entirely and deferred to a new, deterministic, idempotent, self-authorizing mechanism — `core.bootstrap_control_tower_project()` (defined in new migration `P06C`), invoked only after a real System Admin exists, per the bootstrap order KEM-052 §186 already specifies. A new **Section 17 — Bootstrap Lifecycle** documents this in full. Sections formerly numbered 17–21 are renumbered 18–22 accordingly. No zero UUID, sentinel user, or placeholder owner_id is used anywhere in the resulting SQL. Neither KEM-052 nor KEM-053 was modified.
 
 ---
 
@@ -22,7 +24,7 @@
 
 KEM-055 translates the approved KEM-053 (what the database is) and KEM-054 (how it gets built, in what order) into **exact, literal SQL text** — written here, inside this specification document, in fenced code blocks — that a future, separately-authorized artifact will copy into real `.sql` migration files. This document does not itself create a `.sql` file, execute anything, or touch any live Supabase project.
 
-Where this document had to make an implementation-level decision KEM-053/KEM-054 left open (e.g., how a composite key with a nullable column is actually enforced in PostgreSQL), it is treated as a **necessary refinement**, documented explicitly in Section 19, consistent with the precedent already set by KEM-054's own CHECK-vs-trigger refinement of KEM-053 §5.8. One genuine defect was found in KEM-054's stated FK timing (Section 19, OQ-01) — it was not silently fixed; it was documented, and Mr. Ess has since reviewed and approved the interim `P06B` migration as the adopted resolution. Section 20 records a full internal consistency pass performed after all three decisions (OQ-01, R-01, R-02) were applied.
+Where this document had to make an implementation-level decision KEM-053/KEM-054 left open (e.g., how a composite key with a nullable column is actually enforced in PostgreSQL), it is treated as a **necessary refinement**, documented explicitly in Section 20, consistent with the precedent already set by KEM-054's own CHECK-vs-trigger refinement of KEM-053 §5.8. One genuine defect was found in KEM-054's stated FK timing (Section 20, OQ-01) — it was not silently fixed; it was documented, and Mr. Ess has since reviewed and approved the interim `P06B` migration as the adopted resolution. A second genuine defect — `core.projects.owner_id` cannot be seeded by pure SQL — was found during static validation of the generated migrations and resolved by Mr. Ess's Option A decision; see **Section 17 — Bootstrap Lifecycle**. Section 21 records a full internal consistency pass performed after OQ-01, R-01, and R-02 were applied.
 
 No file outside this document was modified to produce it — including in this revision.
 
@@ -61,6 +63,7 @@ Every phase from KEM-054 §9 is restated here as a concrete, named migration fil
 | P05 | `T05_p05_core_lookup_values_create.sql` | Extensible lookup table + trigger-validation function + required seed | P01 | `core.lookup_values`, `core.trigger_validate_lookup()` function | — | P01 | P06, P07, P09, P11, P14 (6 trigger-validated columns), P16 | row counts match Sec. 12; function exists per Sec. 13 | `DROP TABLE`/`DROP FUNCTION` pre-P06 only |
 | P06 | `T06_p06_core_projects_environments_create.sql` | Project + environment core | P02–P05 | `core.projects`, `core.environments` | — | P02, P03, P05 | P07–P16, P21 | Sec. 13 P06 checks | Sec. 15, Tier 2 (forbidden post-data) |
 | P06B | `T06b_p06b_identity_user_roles_scope_fk_add.sql` | **APPROVED (OQ-01)** — adds the `scope_project_id` FK once `core.projects` exists; dependency confirmed as `P03 → P06 → P06B` | P06 | `ALTER TABLE identity.user_roles ADD CONSTRAINT fk_user_roles_scope_project` | `identity.user_roles` | P03, P06 | P19, P21 | FK resolves; `pg_constraint` shows it | `DROP CONSTRAINT` (safe, additive-only migration) |
+| P06C | `T06c_p06c_core_control_tower_bootstrap_function_create.sql` | **APPROVED (Option A, v1.2.0)** — defines `core.bootstrap_control_tower_project()`. Defines the mechanism only; does NOT create PRJ-000. See Section 17 (Bootstrap Lifecycle). No forced dependency vs P06B (both depend only on P04/P06, not each other) — P06B precedes P06C by naming/historical convention, not technical necessity | P04, P06 | `core.bootstrap_control_tower_project()` function | — | P04, P06 | none in P00–P21 (invoked later, out-of-band — Section 17) | function exists, `prosecdef=true`, `EXECUTE` revoked from PUBLIC | `DROP FUNCTION` (safe — defines behavior only, holds no data) |
 | P07 | `T07_p07_core_assets_create.sql` | Asset model + dependency graph | P06 | `core.assets`, `core.asset_projects`, `core.asset_dependencies` | — | P02, P03, P05, P06 | P09–P16 | Sec. 13 P07 checks | Sec. 15, Tier 2 |
 | P08 | `T08_p08_core_documents_create.sql` | Document metadata table | P06, P07 | `core.documents` | — | P03, P06 | P20 | Sec. 13 P08 checks | Sec. 15, Tier 1 |
 | P09 | `T09_p09_infrastructure_registry_create.sql` | Servers/DBs/repos/domains/certs/services | P07 | 6 `infrastructure.*` tables | — | P02, P03, P05, P06, P07 | P10 | Sec. 13 P09 checks | Sec. 15, Tier 2 (ordered — see KEM-054 §9 P09 note) |
@@ -75,11 +78,11 @@ Every phase from KEM-054 §9 is restated here as a concrete, named migration fil
 | P18 | `T18_p18_rls_enablement.sql` (one file per table in practice — see Sec. 10) | Enable RLS on every table except `core.lookup_values` | P03–P17 | `ALTER TABLE ... ENABLE ROW LEVEL SECURITY` × 29 | — | P03–P16 | P19 | Sec. 13 P18 checks | Sec. 15, Tier 3 — PRODUCTION-FORBIDDEN to reverse |
 | P19 | `T19_p19_rls_policies_create.sql` (one file per table — Sec. 10) | Create RLS policies | P04, P18 | policies per Sec. 10 | — | P04, every table | P20 | Sec. 13 P19 checks (9-role matrix) | `DROP POLICY` — granular, safe |
 | P20 | `T20_p20_storage_buckets_and_policies_create.sql` | Storage bucket + Storage RLS | P06, P08, P19 | 1 bucket, Storage RLS policies | — | P06, P08, P19 | none | Sec. 13 P20 checks | Storage RLS policies droppable; bucket never dropped as rollback |
-| P21a | `T21a_p21_seed_required_insert.sql` | Required seed (Sec. 12.1) | all structural phases | rows only | — | every table | none | Sec. 13 P21 checks | batch-tagged delete (Sec. 12) |
-| P21b | `T21b_p21_seed_optional_insert.sql` | Optional seed (Sec. 12.2) | P21a | rows only | — | `ai.models` | none | row presence non-blocking | batch-tagged delete |
-| P21c | `T21c_p21_seed_development_insert.sql` | Dev/test seed (Sec. 12.3), **environment-gated, never staging/production** | P21a | rows only | — | `core.projects` etc. | none | dev-only presence check | batch-tagged delete |
+| P21a | `T21a_p21_seed_required_insert.sql` | Required seed (Sec. 12.1) — roles, permissions, lookup values ONLY; **PRJ-000 removed (v1.2.0) — see Section 17** | all structural phases | rows only | — | every table except `core.projects` | none | Sec. 13 P21 checks | natural-key-scoped delete (Sec. 12.4) |
+| P21b | `T21b_p21_seed_optional_insert.sql` | Optional seed (Sec. 12.2) | P21a | rows only | — | `ai.models` | none | row presence non-blocking | natural-key-scoped delete |
+| P21c | `T21c_p21_seed_development_insert.sql` | Dev/test seed (Sec. 12.3), **environment-gated, never staging/production**; owner_id resolved dynamically from an existing user, never a placeholder (v1.2.0) | P21a | rows only | — | `core.projects` etc. | none | dev-only presence check | natural-key-scoped delete |
 
-This adds **one file to KEM-054's 22-phase plan** — `P06B`, the Mr. Ess-approved dependency-ordered FK migration resolving OQ-01. Every other phase's filename, purpose, and dependency set is a direct, unmodified restatement of KEM-054 §9.
+This adds **two files** to KEM-054's 22-phase plan — `P06B` (OQ-01) and `P06C` (Option A, v1.2.0) — plus a new, explicitly non-migration directory `/database/post-bootstrap/` for Phase 3 invocation (Section 17). Every other phase's filename, purpose, and dependency set is a direct, unmodified restatement of KEM-054 §9.
 
 ---
 
@@ -238,8 +241,8 @@ CREATE TABLE identity.role_permissions (
     CONSTRAINT pk_role_permissions PRIMARY KEY (role_id, permission_id)
 );
 
--- identity.user_roles: see Section 19 R-01 for the surrogate-PK treatment of
--- the nullable scope_project_id column; see Section 19, OQ-01 (APPROVED) for why the FK
+-- identity.user_roles: see Section 20 R-01 for the surrogate-PK treatment of
+-- the nullable scope_project_id column; see Section 20, OQ-01 (APPROVED) for why the FK
 -- itself is added later (P06B), not here.
 CREATE TABLE identity.user_roles (
     id                UUID PRIMARY KEY DEFAULT gen_random_uuid(),
@@ -999,6 +1002,8 @@ Binary file content is **never** stored in PostgreSQL (KEM-053 §7.2, DECISION L
 
 ## 12.1 Required (every environment — dev, staging, production — identically)
 
+**PRJ-000 is NOT part of required seed as of v1.2.0** — see **Section 17, Bootstrap Lifecycle**. `core.projects.owner_id` is `NOT NULL` with no default; no real `identity.users` row exists at migration time, so it cannot be populated here. This is not a gap — it is architecturally intentional per KEM-052 §186's bootstrap order.
+
 ```sql
 -- T21a_p21_seed_required_insert.sql (excerpt — full 9-role, full permission-set, full
 -- lookup-category listing is mechanical and omitted here for length; pattern shown below
@@ -1015,17 +1020,13 @@ INSERT INTO identity.roles (role_code, name, is_system) VALUES
     ('AI_AGENT', 'AI Agent', true),
     ('SERVICE_ACCOUNT', 'Service Account', true)
 ON CONFLICT (role_code) DO NOTHING;
-
-INSERT INTO core.projects (project_code, name, slug, category, is_system, status)
-VALUES ('PRJ-000', 'MR-ESS Control Tower', 'control-tower', 'INTERNAL', true, 'LIVE')
-ON CONFLICT (project_code) DO NOTHING;
 ```
 
 ## 12.2 Optional
 `ai.models` placeholder rows, `status='INACTIVE'` — non-blocking presence check only, keyed on `(provider, model_name, model_version)`.
 
 ## 12.3 Development-Only (never staging/production — Section 27 environment gate, KEM-054)
-Sample `PRJ-001`, environments, and a fabricated asset/dependency graph — keyed on their own natural codes (`PRJ-001`, etc.), same pattern as 12.1/12.2, no separate tagging mechanism.
+Sample `PRJ-001`, environments, and a fabricated asset/dependency graph — keyed on their own natural codes (`PRJ-001`, etc.), same pattern as 12.1/12.2, no separate tagging mechanism. As of v1.2.0, `PRJ-001.owner_id` is resolved dynamically from any existing `identity.users` row at seed time (never a placeholder); the seed step is a documented no-op if no user exists yet in that dev environment.
 
 ## 12.4 Idempotency and Reversal
 
@@ -1037,16 +1038,16 @@ Idempotent forward application:  every seed statement uses
 Deterministic reversal (where the phase's tier, KEM-054 §17/§18, allows it): each seed
         file is paired with a natural-key-scoped DELETE that names the exact rows it
         inserted — e.g. DELETE FROM identity.roles WHERE role_code IN ('SUPER_ADMIN',
-        'ADMIN', ...); DELETE FROM core.projects WHERE project_code = 'PRJ-000'. The
-        seed file and its reversal are two halves of one reviewed unit, kept together —
-        there is no runtime lookup or stored identifier involved, only the literal,
-        already-known key list.
+        'ADMIN', ...). The seed file and its reversal are two halves of one reviewed
+        unit, kept together — there is no runtime lookup or stored identifier involved,
+        only the literal, already-known key list. PRJ-000's own reversal, if ever
+        needed, is a Phase 3 concern (Section 17), not part of this file.
 
 Environment-awareness: 12.3's development seed is never executed against staging or
         production (KEM-054 §27 gate, unchanged); its reversal is likewise dev-only and
         carries no risk of touching 12.1/12.2 data, since natural keys never overlap
-        across the three seed categories by construction (PRJ-000 vs PRJ-001, system
-        roles vs no dev-only roles are ever seeded, etc.).
+        across the three seed categories by construction (PRJ-001 vs system roles —
+        no dev-only roles are ever seeded, etc.).
 ```
 
 ---
@@ -1192,7 +1193,165 @@ RLS failure handling                           → a bad policy is replaced by a
 
 ---
 
-# 17. COMPLETE DEPENDENCY GRAPH
+# 17. BOOTSTRAP LIFECYCLE
+
+> **`PRJ-000` is an identity-dependent bootstrap record. It is NOT ordinary static seed data.** No implementation, migration, seed script, or AI agent acting on this schema may treat `PRJ-000` as something that can be `INSERT`ed unconditionally at migration time. Its existence is conditional on a real System Admin already existing. This section is the authoritative, complete description of how it comes into being — an engineer or an AI agent reading this section alone has everything needed to implement, invoke, and verify the mechanism correctly, with no ambiguous manual steps.
+
+## 17.0 Why this section exists
+
+`core.projects.owner_id` is `UUID NOT NULL`, with no default (KEM-053 §7.2 — **unchanged by this section**; KEM-053 itself was not modified). At the moment migrations `P00`–`P21` run, no human has signed up yet, so no real `identity.users` row exists to reference. **KEM-052 §186** (the existing, authoritative bootstrap sequence for the whole Control Tower — also unmodified) already specifies the correct order:
+
+```text
+CREATE SYSTEM ADMIN  →  CREATE ROLES/PERMISSIONS  →  CREATE CONTROL TOWER SYSTEM RECORD  →  CREATE FIRST PROJECT
+```
+
+Migration `P21a` (required seed) previously attempted to insert `PRJ-000` directly, which is architecturally incompatible with this order. **Option A — Bootstrap Sequencing Correction** (adopted by Mr. Ess) fixes the *sequencing*, not the *schema*: `owner_id` stays `NOT NULL`, and `PRJ-000` creation is moved to the correct point in the lifecycle below.
+
+## 17.1 The three phases
+
+```text
+PHASE 1 — DATABASE MIGRATION BOOTSTRAP        (/database/migrations/, P00–P21)
+    Fully automated, deterministic, idempotent, no user dependency. Produces:
+    schemas, enums, tables, functions, triggers, RLS, roles, permissions, lookup
+    values, optional seed. Does NOT produce PRJ-000 (removed from P21a, v1.2.0).
+
+PHASE 2 — IDENTITY BOOTSTRAP                   (application + Supabase Auth)
+    1. A real person signs up via Supabase Auth (application layer, outside SQL).
+    2. auth.users gains a row -> the existing trg_handle_new_user trigger (P03)
+       fires automatically -> a matching identity.users row is created, with
+       ZERO role grants (unchanged behavior from P03, not modified here).
+    3. A trusted backend process, authenticated with the Supabase service_role
+       key (bypasses RLS entirely — KEM-053 §9.5, unchanged), inserts exactly
+       one row into identity.user_roles granting that identity.users.id the
+       SUPER_ADMIN role (identity.roles.role_code = 'SUPER_ADMIN', already
+       seeded in Phase 1 / P21a). This is the ONLY step in the entire lifecycle
+       that uses a privileged, RLS-bypassing credential, and it must never be
+       reachable from a frontend or any untrusted caller.
+
+PHASE 3 — CONTROL TOWER BOOTSTRAP               (/database/post-bootstrap/)
+    Once Phase 2 is complete, the now-authenticated System Admin's own normal
+    session (NOT service_role) invokes:
+
+        SELECT core.bootstrap_control_tower_project();
+
+    defined in migration P06C. This single function call IS Phase 3 in full.
+```
+
+## 17.2 The mechanism — `core.bootstrap_control_tower_project()`
+
+Defined in migration `P06C` (`T06c_p06c_core_control_tower_bootstrap_function_create.sql`), `SECURITY DEFINER`, `RETURNS UUID`, no arguments.
+
+```text
+Prerequisite:            Phase 2 must already be complete — a real identity.users row
+                          exists AND holds a SUPER_ADMIN grant in identity.user_roles.
+                          The function does not check this as a precondition step; it
+                          is enforced by the authorization check below, which simply
+                          cannot succeed if Phase 2 has not happened.
+
+Exact identity relationship:
+                          owner_id is set to the CALLING session's own
+                          identity.current_user_id() — never a different admin, never
+                          an argument the caller supplies, never a lookup among
+                          multiple candidates. The function derives ownership solely
+                          from who is authenticated when they call it.
+
+Validation that the System Admin exists:
+                          identity.current_user_id() must resolve to a non-NULL,
+                          real identity.users.id (fails otherwise — SQLSTATE 28000),
+                          AND identity.has_role('SUPER_ADMIN') must be true for that
+                          id (fails otherwise — SQLSTATE 42501). Both checks run
+                          against the already-existing identity.user_roles /
+                          identity.roles tables — no new state is introduced. These
+                          two checks run FIRST, before the idempotency check below —
+                          this ordering was corrected during Test D validation: checking
+                          idempotency first would let ANY authenticated caller,
+                          including a non-admin, retrieve the existing PRJ-000 id via
+                          this SECURITY DEFINER function, silently bypassing the RLS
+                          read-restriction on core.projects that a non-admin would
+                          otherwise be subject to. Authorization now gates every code
+                          path, not only the INSERT path.
+
+Prevention of duplicate PRJ-000:
+                          Reached only by an already-authorized SUPER_ADMIN (see
+                          above). The function then does SELECT ... WHERE
+                          project_code = 'PRJ-000'. If found, it returns that row's
+                          id immediately and performs no INSERT. A second, later
+                          concurrent call cannot race past this either, because
+                          core.projects.project_code is UNIQUE (KEM-053 §7.2,
+                          unchanged) — a concurrent duplicate INSERT would be
+                          rejected by the database itself even in the pathological
+                          case of two simultaneous first-time calls.
+
+Binding of owner_id:     Exactly the CALLING identity's own id (see "exact identity
+                          relationship" above) — set in the same INSERT statement
+                          that creates the row, never updated afterward by this
+                          function.
+
+Idempotency:              Re-invoking after PRJ-000 already exists is a safe no-op
+                          that returns the existing id. Tested explicitly (17.4, Test C).
+
+Failure behavior:          RAISE EXCEPTION with a distinct SQLSTATE per failure mode
+                          (28000 = not authenticated, 42501 = authenticated but not
+                          SUPER_ADMIN). Both are ordinary PL/pgSQL exceptions, so the
+                          enclosing (single-statement) transaction rolls back
+                          automatically — no partial or half-created PRJ-000 row can
+                          ever exist under any failure path.
+
+Transaction expectations:  The entire operation is one function call = one implicit
+                          transaction (no explicit BEGIN/COMMIT needed, matching
+                          KEM-054 §19's transaction-boundary convention). Callers do
+                          not need to wrap this call in their own transaction block.
+
+How it is invoked:         By the application bootstrap layer, via a normal
+                          authenticated Supabase client call (PostgREST RPC:
+                          supabase.rpc('bootstrap_control_tower_project')) OR
+                          directly via SQL while connected as that authenticated
+                          session — NEVER via service_role (Section 17.3). See
+                          /database/post-bootstrap/001_control_tower_bootstrap_invoke.sql
+                          for the literal, executable reference.
+
+How it is verified:        SELECT project_code, is_system, owner_id, status FROM
+                          core.projects WHERE project_code = 'PRJ-000'; — expect
+                          exactly one row, owner_id equal to the invoking admin's
+                          identity.users.id.
+```
+
+## 17.3 Contract between database and application
+
+```text
+Database provides:   core.bootstrap_control_tower_project() — self-contained,
+                      self-authorizing, idempotent, no arguments.
+Application must:    call it under the real System Admin's own authenticated
+                      session, after Phase 2 is confirmably complete.
+Application must NOT: call it using the service_role key — service_role has no
+                      corresponding auth.uid(), so identity.current_user_id()
+                      resolves to NULL and the function rejects the call by
+                      itself (same failure path as "no System Admin exists").
+                      This is enforced by the function, not by convention alone.
+```
+
+## 17.4 Required test scenarios (validated in Section 21.1 / this revision's re-validation)
+
+```text
+Test A — No System Admin exists yet -> calling the function fails (SQLSTATE 28000 or
+         42501 depending on session state); zero PRJ-000 rows exist afterward.
+Test B — Exactly one real System Admin exists and calls the function -> PRJ-000 is
+         created; owner_id equals that admin's identity.users.id.
+Test C — The (idempotent) function is called again -> same id returned, still exactly
+         one PRJ-000 row, no error.
+Test D — A different, non-admin authenticated user calls the function -> rejected
+         (SQLSTATE 42501); the existing PRJ-000 row (if any) is unchanged.
+Test E — RLS/security posture elsewhere in the schema is unaffected by this mechanism
+         (Section 16's checklist re-verified unchanged).
+```
+
+## 17.5 What this section deliberately does NOT do
+
+Per Mr. Ess's explicit instruction: no zero/nil UUID, no sentinel "SYSTEM" user, no fake `identity.users` row, and no other placeholder value is used anywhere in this mechanism or in migration `P21a`. `core.projects.owner_id` remains exactly as KEM-053 §7.2 specifies — `NOT NULL`, no default — and this section works entirely within that constraint rather than around it.
+
+---
+
+# 18. COMPLETE DEPENDENCY GRAPH
 
 ```text
 P00 Extensions
@@ -1235,13 +1394,13 @@ core.lookup_values → 6 columns across P06/P07/P09/P10/P14 via trigger, not FK 
 
 ---
 
-# 18. IMPLEMENTATION TRACEABILITY MATRIX
+# 19. IMPLEMENTATION TRACEABILITY MATRIX
 
 `KEM-052 Entity → KEM-053 Table → KEM-054 Phase → KEM-055 Migration`
 
 | KEM-052 Entity | KEM-053 Table | KEM-054 Phase | KEM-055 Migration File |
 |---|---|---|---|
-| Project | core.projects | P06 | `T06_p06_core_projects_environments_create.sql` |
+| Project | core.projects | P06 | `T06_p06_core_projects_environments_create.sql` (schema); PRJ-000 row specifically via P06C function + Phase 3 invocation, NOT a migration — Section 17 |
 | Asset | core.assets | P07 | `T07_p07_core_assets_create.sql` |
 | Server | infrastructure.servers | P09 | `T09_p09_infrastructure_registry_create.sql` |
 | Database | infrastructure.databases | P09 | `T09_p09_infrastructure_registry_create.sql` |
@@ -1273,7 +1432,7 @@ Every KEM-052 entity named in KEM-053 §14's own mapping table is accounted for 
 
 ---
 
-# 19. CONFLICT / EXCEPTION REGISTER
+# 20. CONFLICT / EXCEPTION REGISTER
 
 Carried forward, unchanged, from KEM-053 §15 and KEM-054 (all already RESOLVED at their respective levels — restated here only for completeness, not reopened):
 
@@ -1318,13 +1477,55 @@ OQ-01 — identity.user_roles.scope_project_id FK timing — APPROVED (resolved)
        left unmodified (the correction lives in KEM-055 only, per Mr. Ess's instruction).
 ```
 
-No open item remains in this register. No other defect of this kind was found while producing this document.
+OQ-02 — core.projects.owner_id cannot be seeded by pure SQL for PRJ-000 — APPROVED (resolved,
+       Option A, v1.2.0)
+       KEM-055 §12.1 (v1.1.0) originally included a `core.projects` INSERT for PRJ-000 in
+       migration P21a, omitting `owner_id` — but `owner_id` is `NOT NULL` with no default
+       (KEM-053 §7.2, unchanged), and no real `identity.users` row exists at pure-migration
+       time. Discovered during static validation of the generated SQL. Resolution (Mr. Ess
+       approved, Option A — Bootstrap Sequencing Correction): PRJ-000 creation is removed from
+       P21a entirely and deferred to a new deterministic mechanism,
+       `core.bootstrap_control_tower_project()` (migration P06C), invoked only after a real
+       System Admin exists — per the bootstrap order KEM-052 §186 already specifies. Full
+       detail: Section 17 (Bootstrap Lifecycle). `core.projects.owner_id` remains `NOT NULL`,
+       unchanged. No zero UUID, sentinel user, or placeholder value is used. KEM-052 and
+       KEM-053 were NOT modified — the correction lives entirely in KEM-055 and the SQL
+       migrations, per Mr. Ess's instruction.
+```
+
+## NEW ARCHITECTURAL DISCREPANCY — NEW-01 — RESOLVED
+
+```text
+NEW-01 — KEM-054's migration file plan was stale relative to KEM-055 v1.2.0 — RESOLVED
+       Source:      KEM-054 §2/§9, as it stood at the time this discrepancy was first
+                    logged, did not reflect P06C or the Bootstrap Lifecycle concept.
+       Conflict:    KEM-054 is the stated authority for migration architecture/order, yet
+                    did not fully describe the actual migration set this document
+                    specifies.
+       Original disposition (historical record, preserved): per the fast-recovery task's
+                    explicit scope at the time (KEM-054 untouched), this item was neither
+                    re-investigated nor resolved in that pass — logged for Mr. Ess's
+                    separate decision.
+       Resolution:  Mr. Ess has since formally revised KEM-054 to v1.2.0. KEM-054 v1.2.0
+                    now explicitly documents P06B, P06C, and the full three-phase
+                    Bootstrap Lifecycle (its own Section 9-BIS) — including Option A
+                    (Bootstrap Sequencing Correction), PRJ-000 as an identity-dependent
+                    bootstrap record (not static seed), P06C as the function-DEFINITION
+                    migration only, and PRJ-000 creation as a separate Phase 3
+                    post-bootstrap operation. This resolves the architecture/
+                    specification mismatch this item described. KEM-054 was not modified
+                    by this KEM-055 edit — this entry only records that KEM-054's own,
+                    separately-authorized revision has closed the gap.
+       Status:      RESOLVED.
+```
+
+No other open item remains in this register. No other defect of this kind was found while producing this document.
 
 ---
 
-# 20. KEM-055 IMPLEMENTATION READINESS CHECKLIST
+# 21. KEM-055 IMPLEMENTATION READINESS CHECKLIST
 
-## 20.1 Full Internal Consistency Pass (performed 2026-09-03, post OQ-01/R-01/R-02)
+## 21.1 Full Internal Consistency Pass (performed 2026-09-03, post OQ-01/R-01/R-02)
 
 | # | Criterion | Result |
 |---|---|---|
@@ -1338,16 +1539,16 @@ No open item remains in this register. No other defect of this kind was found wh
 | 8 | Storage policies reference objects that already exist | ✅ PASS with one noted operational dependency — Storage RLS (P20) queries `core.projects`/`identity.has_project_access()`, both established by P06/P19; bucket creation itself is a Supabase Management API/dashboard step outside the P00–P21 SQL sequence (Section 11) and is assumed to precede P20 in the deployment runbook, not expressed as SQL — this is a process note, not an unresolved SQL dependency |
 | 9 | Seed data references objects that already exist | ✅ PASS — P21 (including its natural-key-scoped reversal statements, Section 12.4) runs after every structural phase, including P06B |
 | 10 | No migration depends on a later migration | ✅ PASS — confirmed by the full phase-by-phase re-check in #2; OQ-01 was the only violation found and it is resolved |
-| 11 | No circular dependency remains unresolved | ✅ PASS — the apparent `identity` ↔ `core.projects` circularity was never a true cycle (Section 19 analysis); with P06B, all three phases sit on one strictly-increasing dependency line |
+| 11 | No circular dependency remains unresolved | ✅ PASS — the apparent `identity` ↔ `core.projects` circularity was never a true cycle (Section 20 analysis); with P06B, all three phases sit on one strictly-increasing dependency line |
 | 12 | No `public` application enum exists | ✅ PASS — Section 5, all 15 schema-qualified, re-verified in this pass |
 | 13 | `pg_trgm` remains deferred | ✅ PASS — Section 4, unchanged, not present in any migration file in Section 2 |
 | 14 | No secret values are stored | ✅ PASS — Section 6.5/16, `security.secret_references` has no value-bearing column; re-swept across all 30 tables in this pass, no new column introduced by R-01/R-02/OQ-01 changes holds a secret |
 | 15 | Audit immutability is preserved | ✅ PASS — `REVOKE UPDATE, DELETE` plus no RLS UPDATE/DELETE policy on `audit.audit_events` (Section 6.5, 10.3), untouched by this revision |
-| 16 | Deferred legacy requirements remain deferred | ✅ PASS — KEM-053 §18 / KEM-054 §31 DEFERRED lists carried forward unchanged (Section 20.4 below), none reopened by this revision |
+| 16 | Deferred legacy requirements remain deferred | ✅ PASS — KEM-053 §18 / KEM-054 §31 DEFERRED lists carried forward unchanged (Section 21.4 below), none reopened by this revision |
 
 **All sixteen criteria pass.** (Fifteen were specified by Mr. Ess; #4 and #5 are reported jointly against the same evidence but listed as separate rows per the original request, so the table shows sixteen rows covering the fifteen named criteria plus the explicit function-vs-trigger split.)
 
-## 20.2 ✅ READY
+## 21.2 ✅ READY
 ```text
 P00 Extensions, P01 Schemas, P02 Enums, P03 Identity Core, P04 Identity Helper Functions,
 P05 Lookup Values, P06 Core Project Model, P06B Identity Scope FK Add, P07 Core Asset Model,
@@ -1365,22 +1566,23 @@ Migration validation queries (Section 13)
 Integrity test list (Section 14)
 Failure/recovery procedure (Section 15)
 Security hardening checklist (Section 16) — all items ✅
-Dependency graph (Section 17) — including P06B
-Traceability matrix (Section 18) — complete, no untraceable entity
-Conflict/Exception Register (Section 19) — zero open items
+Bootstrap Lifecycle (Section 17) — PRJ-000 no longer in P21a; deterministic Phase 3 mechanism defined (P06C)
+Dependency graph (Section 18) — including P06B, P06C
+Traceability matrix (Section 19) — complete, no untraceable entity
+Conflict/Exception Register (Section 20) — zero open items; OQ-02 and NEW-01 both RESOLVED
 ```
 
-## 20.3 ⚠️ REQUIRES REVIEW
+## 21.3 ⚠️ REQUIRES REVIEW
 ```text
 (none)
 ```
 
-## 20.4 🚫 BLOCKED
+## 21.4 🚫 BLOCKED
 ```text
 (none)
 ```
 
-## 20.5 ⏸️ DEFERRED
+## 21.5 ⏸️ DEFERRED
 ```text
 Everything already carried forward unchanged from KEM-053 §18 and KEM-054 §31's DEFERRED
         lists (organizations, alerts, workflow_executions, integrations, system_settings/
@@ -1388,15 +1590,15 @@ Everything already carried forward unchanged from KEM-053 §18 and KEM-054 §31'
         per-table temporal history) — none reopened here
 ```
 
-## 20.6 🟢 OVERALL STATUS
+## 21.6 🟢 OVERALL STATUS
 
 **READY FOR SQL GENERATION.**
 
-The full internal consistency pass (Section 20.1) succeeded against all sixteen criteria with zero remaining defects. OQ-01, R-01, and R-02 are resolved and approved. No item in this document is classified REQUIRES REVIEW or BLOCKED. This status covers the **specification only** — every table, enum, function, trigger, index, and policy described in this document is fully and deterministically defined and internally consistent. It does not itself authorize generating actual `.sql` files or executing anything against Supabase; per Section 0's boundary, that remains a separate, explicit authorization from Mr. Ess.
+The full internal consistency pass (Section 21.1) succeeded against all sixteen criteria with zero remaining defects. OQ-01, R-01, and R-02 are resolved and approved. No item in this document is classified REQUIRES REVIEW or BLOCKED. This status covers the **specification only** — every table, enum, function, trigger, index, and policy described in this document is fully and deterministically defined and internally consistent. It does not itself authorize generating actual `.sql` files or executing anything against Supabase; per Section 0's boundary, that remains a separate, explicit authorization from Mr. Ess.
 
 ---
 
-# 21. END OF SPECIFICATION
+# 22. END OF SPECIFICATION
 
 **KemetRise — Legacy Nexus**
 
@@ -1404,8 +1606,8 @@ The full internal consistency pass (Section 20.1) succeeded against all sixteen 
 
 **SUPABASE SQL MIGRATION IMPLEMENTATION SPECIFICATION**
 
-**Version:** 1.1.0
+**Version:** 1.2.0
 
 **STATUS:** APPROVED — READY FOR SQL GENERATION (pending explicit authorization to begin)
 
-No live Supabase project was connected to or modified. No SQL statement shown in this document was executed. No `.sql` file was created on disk. No application, frontend, or backend code was created. No n8n workflow was created. No KEM file from KEM-000 through KEM-052 was modified, deleted, or renamed. KEM-053 and KEM-054 were read but not modified — OQ-01 was documented and, per Mr. Ess's review, approved as resolved within this document only. Only this file, KEM-055 (this revision), was modified.
+No live Supabase project was connected to or modified. No SQL statement shown in this document was executed. No KEM file from KEM-000 through KEM-052, nor KEM-053 or KEM-054, was modified by this edit. KEM-053 and KEM-054 were read but not modified — OQ-01, OQ-02, R-01, and R-02 were all documented and, per Mr. Ess's review, approved as resolved within this document (and the SQL migrations) only. NEW-01 is now RESOLVED (Section 20), reflecting KEM-054's own separately-authorized v1.2.0 revision, which this document records but did not itself produce. Only KEM-055 (this revision) was modified among the KEM specification files.
